@@ -4,7 +4,8 @@
     "description": "None",
     "license": "MIT",
     "dependencies": {
-        "core": "*"
+        "core": "*",
+        "StartbitV2": "github:Hiwonder/StartbitV2#v0.0.9"
     },
     "files": [
         "car.ts",
@@ -14,6 +15,10 @@
         "test.ts"
     ],
     "public": true,
+    "targetVersions": {
+        "target": "6.0.25",
+        "targetId": "microbit"
+    },
     "supportedTargets": [
         "microbit"
     ],

@@ -198,7 +198,7 @@ namespace microbit_car {
      * @param onStep The range offset (0-4095) to turn the signal on
      * @param offStep The range offset (0-4095) to turn the signal off
      */
-    //% block advanced=true
+    //% subcategory=Servo/Motor
     export function setPinPulseRange(pinNumber: PinNum = 0, onStep: number = 0, offStep: number = 2048, chipAddress: number = 0x40): void {
         pinNumber = Math.max(0, Math.min(15, pinNumber))
         const buffer = pins.createBuffer(2)
@@ -228,7 +228,7 @@ namespace microbit_car {
      * @param ledNumber The number (0-15) of the LED to set the duty cycle on
      * @param dutyCycle The duty cycle (0-100) to set the LED to
      */
-    //% block
+    //% subcategory=Servo/Motor
     export function setLedDutyCycle(ledNum: LEDNum = 0, dutyCycle: number, chipAddress: number = 0x40): void {
         ledNum = Math.max(0, Math.min(15, ledNum))
         dutyCycle = Math.max(0, Math.min(100, dutyCycle))
@@ -253,7 +253,7 @@ namespace microbit_car {
      * @param servoNum The number (1-16) of the servo to move
      * @param degrees The degrees (0-180) to move the servo to
      */
-    //% block
+    //% subcategory=Servo/Motor
     export function setServoPosition(servoNum: LEDNum = 0, degrees: number, chipAddress: number = 0x40): void {
         const chip = getChipConfig(chipAddress)
         servoNum = Math.max(0, Math.min(15, servoNum))
@@ -270,7 +270,7 @@ namespace microbit_car {
      * @param chipAddress [64-125] The I2C address of your PCA9685; eg: 64
      * @param freq [40-1000] Frequency (40-1000) in hertz to run the clock cycle at; eg: 50
      */
-    //% block advanced=true
+    //% subcategory=Servo/Motor
     export function init(chipAddress: number = 0x40, newFreq: number = 50) {
         debug(`Init chip at address ${chipAddress} to ${newFreq}Hz`)
         const buf = pins.createBuffer(2)
@@ -296,7 +296,7 @@ namespace microbit_car {
      * Used to reset the chip, will cause the chip to do a full reset and turn off all outputs.
      * @param chipAddress [64-125] The I2C address of your PCA9685; eg: 64
      */
-    //% block
+    //% subcategory=Servo/Motor
     export function reset(chipAddress: number = 0x40): void {
         return init(chipAddress, getChipConfig(chipAddress).freq);
     }
