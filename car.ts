@@ -71,6 +71,13 @@ namespace microbit_car {
         LED15 = 15,
     }
 
+    export enum Motor {
+        MotorLF = 0,    //FRONT
+        MotorRF = 1,
+        MotorLR = 2,    //REAR
+        MotorRR = 3,    
+    }
+
     export class ServoConfigObject {
         id: number;
         pinNumber: number;
@@ -173,7 +180,44 @@ namespace microbit_car {
         pins.i2cWriteBuffer(chipAddress, buffer, false)
     }
 
-    export function getChipConfig(address: number): ChipConfig {
+    /**
+         * Used to setup the chip, will cause the chip to do a full reset and turn off all outputs.
+         * @param chipAddress [64-125] The I2C address of your PCA9685; eg: 64
+         * @param freq [40-1000] Frequency (40-1000) in hertz to run the clock cycle at; eg: 50
+         */
+    //% block
+    export function init(chipAddress: number = 0x40, newFreq: number = 50) {
+        debug(`Init chip at address ${chipAddress} to ${newFreq}Hz`)
+        const buf = pins.createBuffer(2)
+        const freq = (newFreq > 1000 ? 1000 : (newFreq < 40 ? 40 : newFreq))
+        const prescaler = calcFreqPrescaler(freq)
+
+        write(chipAddress, modeRegister1, sleep)
+
+        write(chipAddress, PrescaleReg, prescaler)
+
+        write(chipAddress, allChannelsOnStepLowByte, 0x00)
+        write(chipAddress, allChannelsOnStepHighByte, 0x00)
+        write(chipAddress, allChannelsOffStepLowByte, 0x00)
+        write(chipAddress, allChannelsOffStepHighByte, 0x00)
+
+        write(chipAddress, modeRegister1, wake)
+
+        control.waitMicros(1000)
+        write(chipAddress, modeRegister1, restart)
+    }
+
+    /**
+     * Used to reset the chip, will cause the chip to do a full reset and turn off all outputs.
+     * @param chipAddress [64-125] The I2C address of your PCA9685; eg: 64
+     */
+    //% block
+    //% 
+    export function reset(chipAddress: number = 0x40): void {
+        return init(chipAddress, getChipConfig(chipAddress).freq);
+    }
+
+   function getChipConfig(address: number): ChipConfig {
         for (let i = 0; i < chips.length; i++) {
             if (chips[i].address === address) {
                 debug(`Returning chip ${i}`)
@@ -266,42 +310,48 @@ namespace microbit_car {
         return setPinPulseRange(servo.pinNumber, 0, pwm, chipAddress)
     }
 
+    
     /**
-     * Used to setup the chip, will cause the chip to do a full reset and turn off all outputs.
-     * @param chipAddress [64-125] The I2C address of your PCA9685; eg: 64
-     * @param freq [40-1000] Frequency (40-1000) in hertz to run the clock cycle at; eg: 50
+     * Single Motor Control
+     * @param speed [-100,100] percent of fullspeed, negative is reverse
+     * @param chipAddress [64,125] The I2C address of your PCA9685; eg: 64
      */
     //% block
     //% subcategory=Servo/Motor
-    export function init(chipAddress: number = 0x40, newFreq: number = 50) {
-        debug(`Init chip at address ${chipAddress} to ${newFreq}Hz`)
-        const buf = pins.createBuffer(2)
-        const freq = (newFreq > 1000 ? 1000 : (newFreq < 40 ? 40 : newFreq))
-        const prescaler = calcFreqPrescaler(freq)
-
-        write(chipAddress, modeRegister1, sleep)
-
-        write(chipAddress, PrescaleReg, prescaler)
-
-        write(chipAddress, allChannelsOnStepLowByte, 0x00)
-        write(chipAddress, allChannelsOnStepHighByte, 0x00)
-        write(chipAddress, allChannelsOffStepLowByte, 0x00)
-        write(chipAddress, allChannelsOffStepHighByte, 0x00)
-
-        write(chipAddress, modeRegister1, wake)
-
-        control.waitMicros(1000)
-        write(chipAddress, modeRegister1, restart)
+    export function MotorControl(motor: Motor,speed: number = 0, chipAddress: number = 0x40): void {
+        speed = Math.max(-100, Math.min(100, speed))
+        if(speed>0)
+        {
+            setLedDutyCycle(2 * motor, 100 - Math.abs(speed), chipAddress)
+            setLedDutyCycle(2 * motor + 1, 100, chipAddress)
+        }
+        else
+        {
+            setLedDutyCycle(2 * motor + 1, 100 - Math.abs(speed), chipAddress)
+            setLedDutyCycle(2 * motor, 100, chipAddress)
+        }
     }
 
     /**
      * Used to reset the chip, will cause the chip to do a full reset and turn off all outputs.
-     * @param chipAddress [64-125] The I2C address of your PCA9685; eg: 64
+     * @param speed [0,100] percent of fullspeed
+     * @param degrees [0,360] direction of translation
+     * @param chipAddress [64,125] The I2C address of your PCA9685; eg: 64
      */
     //% block
     //% subcategory=Servo/Motor
-    export function reset(chipAddress: number = 0x40): void {
-        return init(chipAddress, getChipConfig(chipAddress).freq);
+    export function CarTranslation(speed: number = 0, degrees: number = 0, chipAddress: number = 0x40): void {
+        speed = Math.max(0, Math.min(100, speed))
+        degrees = Math.max(0, Math.min(360, degrees))
+        const speed_lim = speed * Math.sin(Math.PI / 4)
+        const rad = Math.PI*degrees/180
+        const vx = speed_lim * Math.cos(rad)
+        const vy = -speed_lim * Math.sin(rad)
+        MotorControl(Motor.MotorLF, vx - vy, chipAddress)
+        MotorControl(Motor.MotorLR, vx + vy, chipAddress)
+        MotorControl(Motor.MotorLF, vx + vy, chipAddress)
+        MotorControl(Motor.MotorLR, vx - vy, chipAddress)
     }
+    
 
 }
