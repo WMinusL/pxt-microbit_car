@@ -333,7 +333,7 @@ namespace microbit_car {
     }
 
     /**
-     * Used to reset the chip, will cause the chip to do a full reset and turn off all outputs.
+     * Car Translation use Mecanum wheel
      * @param speed [0,100] percent of fullspeed
      * @param degrees [0,360] direction of translation
      * @param chipAddress [64,125] The I2C address of your PCA9685; eg: 64
