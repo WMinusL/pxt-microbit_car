@@ -198,9 +198,7 @@ namespace microbit_car {
      * @param onStep The range offset (0-4095) to turn the signal on
      * @param offStep The range offset (0-4095) to turn the signal off
      */
-    //% block
-    //% subcategory=Servo/Motor
-    export function setPinPulseRange(pinNumber: PinNum = 0, onStep: number = 0, offStep: number = 2048, chipAddress: number = 0x40): void {
+    function setPinPulseRange(pinNumber: PinNum = 0, onStep: number = 0, offStep: number = 2048, chipAddress: number = 0x40): void {
         pinNumber = Math.max(0, Math.min(15, pinNumber))
         const buffer = pins.createBuffer(2)
         const pinOffset = PinRegDistance * pinNumber
