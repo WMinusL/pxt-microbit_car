@@ -338,7 +338,7 @@ namespace microbit_car {
      * @param degrees [0,360] direction of translation
      * @param chipAddress [64,125] The I2C address of your PCA9685; eg: 64
      */
-    //% block
+    //% block="Car Translation speed:$speed degrees:$degrees chipAddress:$chipAddress"
     //% subcategory=Servo/Motor
     export function CarTranslation(speed: number = 0, degrees: number = 0, chipAddress: number = 0x40): void {
         speed = Math.max(0, Math.min(100, speed))
@@ -348,9 +348,9 @@ namespace microbit_car {
         const vx = speed_lim * Math.cos(rad)
         const vy = -speed_lim * Math.sin(rad)
         MotorControl(Motor.MotorLF, vx - vy, chipAddress)
+        MotorControl(Motor.MotorRF, vx + vy, chipAddress)
         MotorControl(Motor.MotorLR, vx + vy, chipAddress)
-        MotorControl(Motor.MotorLF, vx + vy, chipAddress)
-        MotorControl(Motor.MotorLR, vx - vy, chipAddress)
+        MotorControl(Motor.MotorRR, vx - vy, chipAddress)
     }
     
 
