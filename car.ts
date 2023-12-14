@@ -234,7 +234,7 @@ namespace microbit_car {
         dutyCycle = Math.max(0, Math.min(100, dutyCycle))
         const pwm = (dutyCycle * (chipResolution - 1)) / 100
         debug(`setLedDutyCycle(${ledNum}, ${dutyCycle}, ${chipAddress})`)
-        return setPinPulseRange(ledNum, 0, pwm, chipAddress)
+        return setPinPulseRange(<number>ledNum, 0, pwm, chipAddress)
     }
 
     function degrees180ToPWM(freq: number, degrees: number, offsetStart: number, offsetEnd: number): number {
