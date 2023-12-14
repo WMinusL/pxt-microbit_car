@@ -5,11 +5,14 @@
     "license": "MIT",
     "dependencies": {
         "core": "*",
-        "StartbitV2": "github:Hiwonder/StartbitV2#v0.0.9"
+        "StartbitV2": "github:Hiwonder/StartbitV2#v0.0.9",
+        "pxt-pca9685": "github:jdarling/pxt-pca9685#v0.0.5"
     },
     "files": [
         "car.ts",
-        "README.md"
+        "README.md",
+        "main.py",
+        "main.ts"
     ],
     "testFiles": [
         "test.ts"
