@@ -1,0 +1,16 @@
+{
+    "name": "pxt-microbit_car",
+    "version": "0.1",
+    "description": "None",
+    "license": "MIT",
+    "dependencies": {
+        "core": "*"
+    },
+    "files": [
+        "car.ts",
+    ],
+    "testFiles": [
+        "test.ts"
+    ],
+    "public": true
+}
