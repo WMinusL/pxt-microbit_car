@@ -229,6 +229,7 @@ namespace microbit_car {
      * @param ledNumber The number (0-15) of the LED to set the duty cycle on
      * @param dutyCycle The duty cycle (0-100) to set the LED to
      */
+    //% block
     //% subcategory=Servo/Motor
     export function setLedDutyCycle(ledNum: LEDNum = 0, dutyCycle: number, chipAddress: number = 0x40): void {
         ledNum = Math.max(0, Math.min(15, ledNum))
