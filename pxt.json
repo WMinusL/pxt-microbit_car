@@ -1,16 +1,19 @@
 {
     "name": "microbit_car",
+    "version": "0.1",
+    "description": "None",
+    "license": "MIT",
     "dependencies": {
         "core": "*"
     },
     "files": [
         "car.ts",
+        "README.md"
+    ],
+    "testFiles": [
         "test.ts"
     ],
-    "targetVersions": {
-        "target": "6.0.25",
-        "targetId": "microbit"
-    },
+    "public": true,
     "supportedTargets": [
         "microbit"
     ],
