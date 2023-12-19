@@ -121,7 +121,7 @@ namespace microbit_car {
          * @param chipAddress [64-125] The I2C address of your PCA9685; eg: 64
          * @param freq [40-1000] Frequency (40-1000) in hertz to run the clock cycle at; eg: 50
          */
-    //% block
+    //% block="Init addr =$chipAddress, freq =$newFreq"
     export function init(chipAddress: number = 0x40, newFreq: number = 50) {
         const buf = pins.createBuffer(2)
         freq = (newFreq > 1000 ? 1000 : (newFreq < 40 ? 40 : newFreq))
