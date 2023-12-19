@@ -71,9 +71,20 @@ namespace microbit_car {
         LED15 = 15,
     }
 
+    export enum PWMNum {
+        PWM8 = 8,
+        PWM9 = 9,
+        PWM10 = 10,
+        PWM11 = 11,
+        PWM12 = 12,
+        PWM13 = 13,
+        PWM14 = 14,
+        PWM15 = 15,
+    }
+
     export enum Motor {
-        MotorLF = 0,    //FRONT
-        MotorRF = 1,
+        MotorLF = 1,    //FRONT
+        MotorRF = 0,
         MotorLR = 2,    //REAR
         MotorRR = 3,    
     }
@@ -299,7 +310,7 @@ namespace microbit_car {
      */
     //% block
     //% subcategory=Servo/Motor
-    export function setServoPosition(servoNum: LEDNum = 0, degrees: number, chipAddress: number = 0x40): void {
+    export function setServoPosition(servoNum: PWMNum = 8, degrees: number, chipAddress: number = 0x40): void {
         const chip = getChipConfig(chipAddress)
         servoNum = Math.max(0, Math.min(15, servoNum))
         degrees = Math.max(0, Math.min(180, degrees))
@@ -333,12 +344,12 @@ namespace microbit_car {
     }
 
     /**
-     * Car Translation use Mecanum wheel
+     * Car translation use Mecanum wheel
      * @param speed [0,100] percent of fullspeed
      * @param degrees [0,360] direction of translation
      * @param chipAddress [64,125] The I2C address of your PCA9685; eg: 64
      */
-    //% block="Car Translation speed:$speed degrees:$degrees chipAddress:$chipAddress"
+    //% block="Car Translation speed =$speed, degrees =$degrees, chipAddress =$chipAddress"
     //% subcategory=Servo/Motor
     export function CarTranslation(speed: number = 0, degrees: number = 0, chipAddress: number = 0x40): void {
         speed = Math.max(0, Math.min(100, speed))
@@ -353,5 +364,19 @@ namespace microbit_car {
         MotorControl(Motor.MotorRR, vx - vy, chipAddress)
     }
     
+    /**
+     * Car Rotation use Mecanum wheel
+     * @param speed [-100,100] percent of fullspeed
+     * @param chipAddress [64,125] The I2C address of your PCA9685; eg: 64
+     */
+    //% block="Car Rotation speed =$speed, chipAddress =$chipAddress"
+    //% subcategory=Servo/Motor
+    export function CarRotation(speed: number = 0, chipAddress: number = 0x40): void {
+        speed = Math.max(0, Math.min(100, speed))
+        MotorControl(Motor.MotorLF, speed, chipAddress)
+        MotorControl(Motor.MotorRF, -speed, chipAddress)
+        MotorControl(Motor.MotorLR, speed, chipAddress)
+        MotorControl(Motor.MotorRR, -speed, chipAddress)
+    }
 
 }
