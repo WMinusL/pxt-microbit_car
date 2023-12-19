@@ -6,7 +6,7 @@ namespace microbit_car {
     let _DEBUG: boolean = false
 
     let CHIP_ADDR = 64
-
+    let freq = 50
     const MIN_CHIP_ADDRESS = 0x40
     const MAX_CHIP_ADDRESS = MIN_CHIP_ADDRESS + 62
     const chipResolution = 4096
@@ -97,87 +97,12 @@ namespace microbit_car {
         deg315 = 315,
     }
 
-    export class ServoConfigObject {
-        id: number;
-        pinNumber: number;
-        minOffset: number;
-        midOffset: number;
-        maxOffset: number;
-        position: number;
-    }
-
-    export const DefaultServoConfig = new ServoConfigObject();
-    DefaultServoConfig.pinNumber = -1
-    DefaultServoConfig.minOffset = 5
-    DefaultServoConfig.midOffset = 15
-    DefaultServoConfig.maxOffset = 25
-    DefaultServoConfig.position = 90
-
-    export class ServoConfig {
-        id: number;
-        pinNumber: number;
-        minOffset: number;
-        midOffset: number;
-        maxOffset: number;
-        position: number;
-        constructor(id: number, config: ServoConfigObject) {
-            this.id = id
-            this.init(config)
-        }
-
-        init(config: ServoConfigObject) {
-            this.pinNumber = config.pinNumber > -1 ? config.pinNumber : this.id - 1
-            this.setOffsetsFromFreq(config.minOffset, config.maxOffset, config.midOffset)
-            this.position = -1
-        }
-
-        setOffsetsFromFreq(startFreq: number, stopFreq: number, midFreq: number = -1): void {
-            this.minOffset = startFreq // calcFreqOffset(startFreq)
-            this.maxOffset = stopFreq // calcFreqOffset(stopFreq)
-            this.midOffset = midFreq > -1 ? midFreq : ((stopFreq - startFreq) / 2) + startFreq
-        }
-
-        config(): string[] {
-            return [
-                'id', this.id.toString(),
-                'pinNumber', this.pinNumber.toString(),
-                'minOffset', this.minOffset.toString(),
-                'maxOffset', this.maxOffset.toString(),
-                'position', this.position.toString(),
-            ]
-        }
-    }
-
-    export class ChipConfig {
-        address: number;
-        servos: ServoConfig[];
-        freq: number;
-        constructor(address: number = 0x40, freq: number = 50) {
-            this.address = address
-            this.servos = [
-                new ServoConfig(1, DefaultServoConfig),
-                new ServoConfig(2, DefaultServoConfig),
-                new ServoConfig(3, DefaultServoConfig),
-                new ServoConfig(4, DefaultServoConfig),
-                new ServoConfig(5, DefaultServoConfig),
-                new ServoConfig(6, DefaultServoConfig),
-                new ServoConfig(7, DefaultServoConfig),
-                new ServoConfig(8, DefaultServoConfig),
-                new ServoConfig(9, DefaultServoConfig),
-                new ServoConfig(10, DefaultServoConfig),
-                new ServoConfig(11, DefaultServoConfig),
-                new ServoConfig(12, DefaultServoConfig),
-                new ServoConfig(13, DefaultServoConfig),
-                new ServoConfig(14, DefaultServoConfig),
-                new ServoConfig(15, DefaultServoConfig),
-                new ServoConfig(16, DefaultServoConfig)
-            ]
-            this.freq = freq
-            init(address, freq)
-        }
-    }
-
-    export const chips: ChipConfig[] = []
+    
+    const pinNumber = -1
+    const minOffset = 5
+    const midOffset = 15
+    const maxOffset = 25
+    const position = 90
 
     function calcFreqPrescaler(freq: number): number {
         return (25000000 / (freq * chipResolution)) - 1;
@@ -199,7 +124,7 @@ namespace microbit_car {
     //% block
     export function init(chipAddress: number = 0x40, newFreq: number = 50) {
         const buf = pins.createBuffer(2)
-        const freq = (newFreq > 1000 ? 1000 : (newFreq < 40 ? 40 : newFreq))
+        freq = (newFreq > 1000 ? 1000 : (newFreq < 40 ? 40 : newFreq))
         const prescaler = calcFreqPrescaler(freq)
         CHIP_ADDR = chipAddress
         write(chipAddress, modeRegister1, sleep)
@@ -215,28 +140,6 @@ namespace microbit_car {
 
         control.waitMicros(1000)
         write(chipAddress, modeRegister1, restart)
-    }
-
-    /**
-     * Used to reset the chip, will cause the chip to do a full reset and turn off all outputs.
-     * @param chipAddress [64-125] The I2C address of your PCA9685; eg: 64
-     */
-    //% block
-    //% 
-    export function reset(chipAddress: number = 0x40): void {
-        return init(chipAddress, getChipConfig(chipAddress).freq);
-    }
-
-   function getChipConfig(address: number): ChipConfig {
-        for (let i = 0; i < chips.length; i++) {
-            if (chips[i].address === address) {
-                return chips[i]
-            }
-        }
-        const chip = new ChipConfig(address)
-        const index = chips.length
-        chips.push(chip)
-        return chips[index]
     }
 
     function calcFreqOffset(freq: number, offset: number) {
@@ -302,13 +205,10 @@ namespace microbit_car {
     //% block
     //% subcategory=Servo/Motor
     export function setServoPosition(servoNum: PWMNum = 8, degrees: number): void {
-        const chip = getChipConfig(CHIP_ADDR)
         servoNum = Math.max(0, Math.min(15, servoNum))
         degrees = Math.max(0, Math.min(180, degrees))
-        const servo: ServoConfig = chip.servos[servoNum]
-        const pwm = degrees180ToPWM(chip.freq, degrees, servo.minOffset, servo.maxOffset)
-        servo.position = degrees
-        return setPinPulseRange(servo.pinNumber, 0, pwm, CHIP_ADDR)
+        const pwm = degrees180ToPWM(freq, degrees, minOffset, maxOffset)
+        return setPinPulseRange(<number>servoNum, 0, pwm, CHIP_ADDR)
     }
 
     
