@@ -259,7 +259,7 @@ namespace microbit_car {
     //% block="Car Rotation speed =$speed"
     //% subcategory=Servo/Motor
     export function CarRotation(speed: number = 0): void {
-        speed = Math.max(0, Math.min(100, speed))
+        speed = Math.max(-100, Math.min(100, speed))
         MotorControl(Motor.MotorLF,  speed)
         MotorControl(Motor.MotorRF, -speed)
         MotorControl(Motor.MotorLR,  speed)
