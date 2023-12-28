@@ -254,7 +254,7 @@ namespace microbit_car {
      * Car Rotation use Mecanum wheel
      * @param speed [-100,100] percent of fullspeed
      */
-    //% block="Car Rotation speed =$speed"
+    //% block="Car Rotation, speed =$speed"
     //% subcategory=Servo/Motor
     export function CarRotation(speed: number = 0): void {
         speed = Math.max(-100, Math.min(100, speed))
