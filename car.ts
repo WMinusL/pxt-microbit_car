@@ -2,7 +2,7 @@
  * microbit_car
  */
 //% weight=100 color=#0fbc11 icon="\uf021"
-namespace microbit_car {
+namespace microbit_car0 {
     let _DEBUG: boolean = false
 
     let CHIP_ADDR = 64
