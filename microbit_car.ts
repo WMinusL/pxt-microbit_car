@@ -178,7 +178,7 @@ namespace microbit_car {
      * @param ledNumber The number (0-15) of the LED to set the duty cycle on
      * @param dutyCycle The duty cycle (0-100) to set the LED to
      */
-    //% block
+    //% block="setLedDutyCycle, led=$ledNum, DutyCycle=$dutyCycle"
     //% subcategory=Servo/Motor
     export function setLedDutyCycle(ledNum: LEDNum = 0, dutyCycle: number): void {
         ledNum = Math.max(0, Math.min(15, ledNum))
@@ -202,7 +202,7 @@ namespace microbit_car {
      * @param servoNum The number (1-16) of the servo to move
      * @param degrees The degrees (0-180) to move the servo to
      */
-    //% block
+    //% block="setServoPosition, servo=$servoNum, degree=$degrees"
     //% subcategory=Servo/Motor
     export function setServoPosition(servoNum: PWMNum = 8, degrees: number): void {
         servoNum = Math.max(0, Math.min(15, servoNum))
@@ -216,7 +216,7 @@ namespace microbit_car {
      * Single Motor Control
      * @param speed [-100,100] percent of fullspeed, negative is reverse
      */
-    //% block
+    //% block="MotorControl, motor=$motor, speed=$speed"
     //% subcategory=Servo/Motor
     export function MotorControl(motor: Motor, speed: number = 0): void {
         speed = Math.max(-100, Math.min(100, speed))
@@ -293,7 +293,7 @@ namespace microbit_car {
         LINE_FOLLOWER_I2C_ADDR = chipAddress
     }
 
-    //% weight=95 blockId=hiwonder_line_followers blockGap=50 block="Line follower %lineFollowerSensor is %LineColor"
+    //% weight=95 blockId=hiwonder_line_followers blockGap=50 block="Line follower %lineFollowerSensor is %Color"
     //% inlineInputMode=inline
     //% subcategory=Sensor
     export function hiwonder_line_followers(lineFollowerSensor: LineFollowerSensors, color: LineColor): boolean {
