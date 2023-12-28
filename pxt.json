@@ -6,7 +6,6 @@
     "dependencies": {
         "core": "*",
         "StartbitV2": "github:Hiwonder/StartbitV2#v0.0.9",
-        "pxt-pca9685": "github:jdarling/pxt-pca9685#v0.0.5",
         "wondercam": "github:hiwonder/wondercam#552de83e1a40fe71beae2f5ddd5976a0920e0b46"
     },
     "files": [

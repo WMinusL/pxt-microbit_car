@@ -117,12 +117,12 @@ namespace microbit_car {
     }
 
     /**
-         * Used to setup the chip, will cause the chip to do a full reset and turn off all outputs.
+         * Save PCA9685 I2C address and initialize the chip.
          * @param chipAddress [64-125] The I2C address of your PCA9685; eg: 64
          * @param freq [40-1000] Frequency (40-1000) in hertz to run the clock cycle at; eg: 50
          */
-    //% block="Init addr =$chipAddress, freq =$newFreq"
-    export function init(chipAddress: number = 0x40, newFreq: number = 50) {
+    //% block="PCA9685 Init, addr =$chipAddress, freq =$newFreq"
+    export function pca9685_init(chipAddress: number = 0x40, newFreq: number = 50) {
         const buf = pins.createBuffer(2)
         freq = (newFreq > 1000 ? 1000 : (newFreq < 40 ? 40 : newFreq))
         const prescaler = calcFreqPrescaler(freq)
@@ -264,119 +264,7 @@ namespace microbit_car {
         MotorControl(Motor.MotorRR, -speed)
     }
 
-    export enum startbit_lineFollower {
-        //% blockId="S1_OUT_S2_OUT" block="Sensor1 and sensor2 are out black line"
-        S1_OUT_S2_OUT = 0x00,
-        //% blockId="S1_OUT_S2_IN" block="Sensor2 in black line but sensor1 not"
-        S1_OUT_S2_IN = 0x01,
-        //% blockId="S1_IN_S2_OUT" block="Sensor1 in black line but sensor2 not"
-        S1_IN_S2_OUT = 0x02,
-        //% blockId="S1_IN_S2_IN" block="Sensor1 and sensor2 are in black line "
-        S1_IN_S2_IN = 0x03
-    }
-
-    export enum startbit_lineFollowPort {
-        //% block="Port 1"
-        port1 = 0x01
-    }
-
-    let lineFollowPin1: AnalogPin;
-    let lineFollowPin2: AnalogPin;
-    //% weight=92 blockId=lineFollowSensor_init  block="Initialize lineFollowSensor|port %port"
-    //% subcategory=lineFollowSensor
-    export function lineFollowSensor_init(port: startbit_lineFollowPort) {
-        switch (port) {
-            case startbit_lineFollowPort.port1:
-                lineFollowPin1 = AnalogPin.P1;
-                lineFollowPin2 = AnalogPin.P2;
-                break;
-        }
-    }
-
-    export enum startbit_LineFollowerSensor {
-        //% block="Sensor 1"
-        LFSensor_1 = 0x00,
-        //% block="Sensor 2"
-        LFSensor_2 = 0x01
-    }
-
-    export enum startbit_iic {
-        //% block="Port 3"
-        port3 = 0x03,
-        //% block="Port 4"
-        port4 = 0x04,
-        //% block="Port 6"
-        port6 = 0x06
-    }
-
-    //% weight=86 blockId=lineFollow_iic_init  block="Initialize lineFollow iic|port %port"
-    //% subcategory=lineFollowSensor
-    export function lineFollow_iic_init(port: startbit_iic) {
-        switch (port) {
-            case startbit_iic.port3:
-                break;
-            case startbit_iic.port4:
-                break;
-            case startbit_iic.port6:
-                break;
-        }
-    }
-
-    /**
-* Get the condition of the line follower sensor
-*/
-    //% weight=96 blockId=startbit_readLineFollowerStatus block="Line follower status|%status"
-    //% subcategory=lineFollowSensor
-    export function startbit_readLineFollowerStatus(status: startbit_lineFollower): boolean {
-        let s1 = 0;
-        let s2 = 0;
-
-        s1 = pins.analogReadPin(lineFollowPin1);
-        s2 = pins.analogReadPin(lineFollowPin2);
-        s1 = s1 * 255 / 1023;
-        s2 = s2 * 255 / 1023;
-        if (s1 < 200)
-            s1 = 0;
-        else
-            s1 = 1;
-        if (s2 < 200)
-            s2 = 0;
-        else
-            s2 = 1;
-
-        let s = ((1 & s1) << 1) | s2;
-        if (s == status) {
-            return true;
-        }
-        else {
-            return false;
-        }
-    }
-
-    /**
-     * Get the line follower sensor port ad value
-     */
-    //% weight=89 blockId=startbit_lineSensorValue blockGap=50 block="Get line follower sensor|%sensor|ad value"
-    //% subcategory=lineFollowSensor
-    export function startbit_lineSensorValue(sensor: startbit_LineFollowerSensor): number {
-        let s1 = 0;
-        let s2 = 0;
-
-        s1 = pins.analogReadPin(lineFollowPin1);
-        s2 = pins.analogReadPin(lineFollowPin2);
-        s1 = s1 * 255 / 1023;
-        s2 = s2 * 255 / 1023;
-
-        if (sensor == startbit_LineFollowerSensor.LFSensor_1) {
-            return 255 - s1;
-        }
-        else {
-            return 255 - s2;
-        }
-
-    }
-
-    export enum startbit_LineFollowerSensors {
+    export enum LineFollowerSensors {
         //% block="S1"
         S1,
         //% block="S2"
@@ -387,70 +275,79 @@ namespace microbit_car {
         S4
     }
 
-    export enum startbit_LineColor {
+    export enum LineColor {
         //% block="Black"
         Black,
         //% block="White"
         White
     }
 
-    const LINE_FOLLOWER_I2C_ADDR = 0x78
+    let LINE_FOLLOWER_I2C_ADDR = 0x78
+    /**
+    * Save line follower I2C address.
+    * @param chipAddress [0-255] The I2C address of line follower.
+    */
+    //% block="Line Follower Init, addr =$chipAddress"
+    //% subcategory=Sensor
+    export function hiwonder_line_followers_init(chipAddress: number = 0x78) {
+        LINE_FOLLOWER_I2C_ADDR = chipAddress
+    }
 
-    //% weight=95 blockId=startbit_line_followers blockGap=50 block="Line follower %lineFollowerSensor in %LineColor ?"
+    //% weight=95 blockId=hiwonder_line_followers blockGap=50 block="Line follower %lineFollowerSensor is %LineColor"
     //% inlineInputMode=inline
-    //% subcategory=lineFollowSensor
-    export function startbit_line_followers(lineFollowerSensor: startbit_LineFollowerSensors, LineColor: startbit_LineColor): boolean {
+    //% subcategory=Sensor
+    export function hiwonder_line_followers(lineFollowerSensor: LineFollowerSensors, color: LineColor): boolean {
         pins.i2cWriteNumber(LINE_FOLLOWER_I2C_ADDR, 1, NumberFormat.UInt8BE);
         let data = pins.i2cReadNumber(LINE_FOLLOWER_I2C_ADDR, NumberFormat.UInt8BE);
         let status = false;
         switch (lineFollowerSensor) {
-            case startbit_LineFollowerSensors.S1:
+            case LineFollowerSensors.S1:
                 if (data & 0x01) {
-                    if (LineColor == startbit_LineColor.Black) {
+                    if (color == LineColor.Black) {
                         status = true;
                     }
                 }
                 else {
-                    if (LineColor == startbit_LineColor.White) {
+                    if (color == LineColor.White) {
                         status = true;
                     }
                 }
                 break;
 
-            case startbit_LineFollowerSensors.S2:
+            case LineFollowerSensors.S2:
                 if (data & 0x02) {
-                    if (LineColor == startbit_LineColor.Black) {
+                    if (color == LineColor.Black) {
                         status = true;
                     }
                 }
                 else {
-                    if (LineColor == startbit_LineColor.White) {
+                    if (color == LineColor.White) {
                         status = true;
                     }
                 }
                 break;
 
-            case startbit_LineFollowerSensors.S3:
+            case LineFollowerSensors.S3:
                 if (data & 0x04) {
-                    if (LineColor == startbit_LineColor.Black) {
+                    if (color == LineColor.Black) {
                         status = true;
                     }
                 }
                 else {
-                    if (LineColor == startbit_LineColor.White) {
+                    if (color == LineColor.White) {
                         status = true;
                     }
                 }
                 break;
 
-            case startbit_LineFollowerSensors.S4:
+            case LineFollowerSensors.S4:
                 if (data & 0x08) {
-                    if (LineColor == startbit_LineColor.Black) {
+                    if (color == LineColor.Black) {
                         status = true;
                     }
                 }
                 else {
-                    if (LineColor == startbit_LineColor.White) {
+                    if (color == LineColor.White) {
                         status = true;
                     }
                 }
