@@ -12,7 +12,9 @@
         "car.ts",
         "README.md",
         "main.py",
-        "main.ts"
+        "main.ts",
+        "_locales/zh/microbit_car-strings.json",
+        "_locales/zh/microbit_car-jsdocs-strings.json"
     ],
     "testFiles": [
         "test.ts"
