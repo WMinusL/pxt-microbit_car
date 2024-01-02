@@ -119,7 +119,7 @@ namespace microbit_car {
     /**
          * Save PCA9685 I2C address and initialize the chip.
          * @param chipAddress [64-125] The I2C address of your PCA9685; eg: 64
-         * @param freq [40-1000] Frequency (40-1000) in hertz to run the clock cycle at; eg: 50
+         * @param newFreq [40-1000] Frequency (40-1000) in hertz to run the clock cycle at; eg: 50
          */
     //% block="PCA9685 Init, addr =$chipAddress, freq =$newFreq"
     export function pca9685_init(chipAddress: number = 0x40, newFreq: number = 50) {
