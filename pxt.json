@@ -10,7 +10,6 @@
     },
     "files": [
         "microbit_car.ts",
-        "car.ts",
         "README.md",
         "main.py",
         "main.ts",
