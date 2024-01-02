@@ -240,7 +240,17 @@ namespace microbit_car {
     export function CarTranslation(speed: number = 0, degrees: MoveDir = MoveDir.deg0): void {
         speed = Math.max(0, Math.min(100, speed))
         degrees = Math.max(0, Math.min(360, degrees))
-        const speed_lim = speed * Math.sin(Math.PI / 4)
+        let speed_lim = speed
+        if (
+            degrees == 45   ||
+            degrees == 135  || 
+            degrees == 225  ||
+            degrees == 315
+            )
+        {
+            speed_lim = speed * Math.sin(Math.PI / 4)
+        }
+            
         const rad = Math.PI * degrees / 180
         const vx = speed_lim * Math.cos(rad)
         const vy = -speed_lim * Math.sin(rad)
