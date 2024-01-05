@@ -6,8 +6,7 @@
     "dependencies": {
         "core": "*",
         "wondercam": "github:hiwonder/wondercam#552de83e1a40fe71beae2f5ddd5976a0920e0b46",
-        "neopixel": "github:microsoft/pxt-neopixel#v0.7.5",
-        "StartbitV2": "github:Hiwonder/StartbitV2#v0.0.9"
+        "neopixel": "github:microsoft/pxt-neopixel#v0.7.5"
     },
     "files": [
         "microbit_car.ts",
