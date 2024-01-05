@@ -315,14 +315,14 @@ namespace microbit_car {
         LINE_FOLLOWER_I2C_ADDR = chipAddress
     }
 
-    //% weight=95 blockId=hiwonder_line_followers blockGap=50 block="Line follower %lineFollowerSensor is %Color"
+    //% weight=95 blockGap=50 block="Line follower %sensor is %color"
     //% inlineInputMode=inline
     //% subcategory=Sensor
-    export function hiwonder_line_followers(lineFollowerSensor: LineFollowerSensors, color: LineColor): boolean {
+    export function hiwonder_line_followers(sensor: LineFollowerSensors, color: LineColor): boolean {
         pins.i2cWriteNumber(LINE_FOLLOWER_I2C_ADDR, 1, NumberFormat.UInt8BE);
         let data = pins.i2cReadNumber(LINE_FOLLOWER_I2C_ADDR, NumberFormat.UInt8BE);
         let status = false;
-        switch (lineFollowerSensor) {
+        switch (sensor) {
             case LineFollowerSensors.S1:
                 if (data & 0x01) {
                     if (color == LineColor.Black) {

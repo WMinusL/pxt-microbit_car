@@ -7,7 +7,7 @@
     "microbit_car.setLedDutyCycle|block"    : "设置PWM输出 端口$ledNum, 占空比$dutyCycle",
 
     "microbit_car.hiwonder_line_followers_init|block"   : "初始化巡线传感器 地址$chipAddress",
-    "microbit_car.hiwonder_line_followers|block"        : "巡线传感器 $lineFollowerSensor, 检测到颜色 $Color",
+    "microbit_car.hiwonder_line_followers|block"        : "巡线传感器$sensor检测到$color",
     "microbit_car.LineColor.Black|block"    : "黑色",
     "microbit_car.LineColor.White|block"    : "白色",
 
