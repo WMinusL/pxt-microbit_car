@@ -315,7 +315,12 @@ namespace microbit_car {
         LINE_FOLLOWER_I2C_ADDR = chipAddress
     }
 
-    //% weight=95 blockGap=50 block="Line follower %sensor is %color"
+    /**
+    * Check line follower status.
+    * @param sensor
+    * @param color
+    */
+    //% block="Line follower %sensor is %color"
     //% inlineInputMode=inline
     //% subcategory=Sensor
     export function hiwonder_line_followers(sensor: LineFollowerSensors, color: LineColor): boolean {
@@ -377,5 +382,4 @@ namespace microbit_car {
         }
         return status;
     }
-
 }
