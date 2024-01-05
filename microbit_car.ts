@@ -199,8 +199,8 @@ namespace microbit_car {
 
     /**
      * Used to move the given servo to the specified degrees (0-180) connected to the PCA9685
-     * @param servoNum The number (1-16) of the servo to move
-     * @param degrees The degrees (0-180) to move the servo to
+     * @param servoNum The number (8-15) of the servo to move
+     * @param degrees The degrees (0-180) to move the servo to; eg: 90
      */
     //% block
     //% subcategory=Servo/Motor
@@ -295,7 +295,7 @@ namespace microbit_car {
     let LINE_FOLLOWER_I2C_ADDR = 0x78
     /**
     * Save line follower I2C address.
-    * @param chipAddress [0-255] The I2C address of line follower.
+    * @param chipAddress [0-255] The I2C address of line follower; eg: 0x78
     */
     //% block="Line Follower Init, addr =$chipAddress"
     //% subcategory=Sensor
