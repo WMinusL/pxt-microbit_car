@@ -87,13 +87,21 @@ namespace microbit_car {
     }
 
     export enum MoveDir {
+        //% block
         deg0 = 0,
+        //% block
         deg45 = 45,
+        //% block
         deg90 = 90,
+        //% block
         deg135 = 135,
+        //% block
         deg180 = 180,
+        //% block
         deg225 = 225,
+        //% block
         deg270 = 270,
+        //% block
         deg315 = 315,
     }
 

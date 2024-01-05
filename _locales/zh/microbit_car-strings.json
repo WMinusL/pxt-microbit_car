@@ -11,7 +11,7 @@
     "microbit_car.LineColor.Black|block": "黑色",
     "microbit_car.LineColor.White|block": "白色",
 
-    "microbit_car.MoveDir.deg0|block": "0度",
+    "microbit_car.MoveDir.deg0|block"   : "0度",
     "microbit_car.MoveDir.deg45|block"  : "45度",
     "microbit_car.MoveDir.deg90|block"  : "90度",
     "microbit_car.MoveDir.deg135|block" : "135度",
