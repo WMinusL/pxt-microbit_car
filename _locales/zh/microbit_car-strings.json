@@ -1,15 +1,15 @@
 {
-    "microbit_car.pca9685_init|block": "初始化PCA9685芯片 地址|$chipAddress| 频率|$newFreq|",
-    "microbit_car.CarRotation|block": "小车转速|$speed|",
-    "microbit_car.CarTranslation|block": "小车平移速度|$speed| 角度|%degrees",
-    "microbit_car.MotorControl|block": "电机控制|%motor |$speed|",
-    "microbit_car.setServoPosition|block": "设置舵机位置 |%servoNum |$degrees|",
-    "microbit_car.setLedDutyCycle|block": "设置LED占空比|%ledNum |$dutyCycle|",
+    "microbit_car.pca9685_init|block"       : "初始化PCA9685芯片 地址$chipAddress 频率$newFreq",
+    "microbit_car.CarRotation|block"        : "小车原地旋转 速度百分比$speed",
+    "microbit_car.CarTranslation|block"     : "小车平移 速度百分比$speed, 角度$degrees",
+    "microbit_car.MotorControl|block"       : "单个电机控制 $motor, 速度百分比$speed",
+    "microbit_car.setServoPosition|block"   : "舵机控制 端口$servoNum, 角度$degrees",
+    "microbit_car.setLedDutyCycle|block"    : "设置PWM输出 端口$ledNum, 占空比$dutyCycle",
 
-    "microbit_car.hiwonder_line_followers_init|block": "初始化巡线传感器 地址|$chipAddress|",
-    "microbit_car.hiwonder_line_followers|block": "传感器 |%lineFollowerSensor 检测到 颜色|%Color",
-    "microbit_car.LineColor.Black|block": "黑色",
-    "microbit_car.LineColor.White|block": "白色",
+    "microbit_car.hiwonder_line_followers_init|block"   : "初始化巡线传感器 地址$chipAddress",
+    "microbit_car.hiwonder_line_followers|block"        : "巡线传感器 $lineFollowerSensor, 检测到颜色 $Color",
+    "microbit_car.LineColor.Black|block"    : "黑色",
+    "microbit_car.LineColor.White|block"    : "白色",
 
     "microbit_car.MoveDir.deg0|block"   : "0度",
     "microbit_car.MoveDir.deg45|block"  : "45度",
@@ -20,6 +20,11 @@
     "microbit_car.MoveDir.deg270|block" : "270度",
     "microbit_car.MoveDir.deg315|block" : "315度",
 
-    "{id:subcategory}Servo/Motor": "舵机/电机",
-    "{id:subcategory}Sensor": "传感器"
+    "microbit_car.Motor.MotorLF|block"  : "左前轮",
+    "microbit_car.Motor.MotorRF|block"  : "右前轮",
+    "microbit_car.Motor.MotorLR|block"  : "左后轮",
+    "microbit_car.Motor.MotorRR|block"  : "右后轮",
+
+    "{id:subcategory}Servo/Motor"   : "舵机/电机",
+    "{id:subcategory}Sensor"        : "传感器"
 }
