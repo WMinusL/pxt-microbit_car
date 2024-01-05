@@ -1,14 +1,15 @@
 {
-    "microbit_car.pca9685_init|block": "初始化芯片 地址|$chipAddress| 频率|$newFreq|",
-    "microbit_car.CarRotation|block": "汽车转速|$speed|",
-    "microbit_car.CarTranslation|block": "汽车平移速度|$speed| 角度|%degrees",
+    "microbit_car.pca9685_init|block": "初始化PCA9685芯片 地址|$chipAddress| 频率|$newFreq|",
+    "microbit_car.CarRotation|block": "小车转速|$speed|",
+    "microbit_car.CarTranslation|block": "小车平移速度|$speed| 角度|%degrees",
     "microbit_car.MotorControl|block": "电机控制|%motor |$speed|",
     "microbit_car.setServoPosition|block": "设置舵机位置 |%servoNum |$degrees|",
     "microbit_car.setLedDutyCycle|block": "设置LED占空比|%ledNum |$dutyCycle|",
     "microbit_car.hiwonder_line_followers_init|block": "初始化巡线传感器 地址|$chipAddress|",
     "microbit_car.hiwonder_line_followers|block": "传感器 |%lineFollowerSensor 检测到 颜色|%Color",
+    "microbit_car.LineColor.Black|block": "黑色",
+    "microbit_car.LineColor.White|block": "白色",
 
     "{id:subcategory}Servo/Motor": "舵机/电机",
     "{id:subcategory}Sensor": "传感器"
-    
 }
