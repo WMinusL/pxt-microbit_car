@@ -83,9 +83,9 @@ namespace microbit_car {
         //% block
         MotorLF = 0,    //FRONT
         //% block
-        MotorRF = 1,
+        MotorRF = 2,
         //% block
-        MotorLR = 2,    //REAR
+        MotorLR = 1,    //REAR
         //% block
         MotorRR = 3,
     }
@@ -231,13 +231,17 @@ namespace microbit_car {
     //% block="MotorControl, motor=$motor, speed=$speed"
     //% subcategory=Servo/Motor
     export function MotorControl(motor: Motor, speed: number = 0): void {
-        speed = Math.max(-100, Math.min(100, speed))
-        if (speed > 0) {
-            setLedDutyCycle(2 * motor, 100 - Math.abs(speed))
+        let v = Math.max(-100, Math.min(100, speed))
+        if (motor == 0 || motor == 1)
+        {
+            v = -v
+        }
+        if (v > 0) {
+            setLedDutyCycle(2 * motor, 100 - Math.abs(v))
             setLedDutyCycle(2 * motor + 1, 100)
         }
         else {
-            setLedDutyCycle(2 * motor + 1, 100 - Math.abs(speed))
+            setLedDutyCycle(2 * motor + 1, 100 - Math.abs(v))
             setLedDutyCycle(2 * motor, 100)
         }
     }
