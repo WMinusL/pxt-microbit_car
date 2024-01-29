@@ -81,9 +81,9 @@ namespace microbit_car {
 
     export enum Motor {
         //% block
-        MotorLF = 1,    //FRONT
+        MotorLF = 0,    //FRONT
         //% block
-        MotorRF = 0,
+        MotorRF = 1,
         //% block
         MotorLR = 2,    //REAR
         //% block
